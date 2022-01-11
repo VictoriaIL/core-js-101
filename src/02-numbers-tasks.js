@@ -109,8 +109,18 @@ function getLinearEquationRoot(a, b) {
  *   (0,1) (0,1)     => 0
  *   (0,1) (1,2)     => 0
  */
-function getAngleBetweenVectors(/* x1, y1, x2, y2 */) {
-  throw new Error('Not implemented');
+function getAngleBetweenVectors(x1, y1, x2, y2) {
+  const cos = x1 * x2 + y1 * y2;
+  switch (cos) {
+    case 1:
+      return 0;
+    case 0:
+      return Math.PI / 2;
+    case -1:
+      return Math.PI;
+    default:
+      return 0;
+  }
 }
 
 /**
