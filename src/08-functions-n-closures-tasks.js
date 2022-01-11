@@ -62,8 +62,20 @@ function getPowerFunction(exponent) {
  *   getPolynom(8)     => y = 8
  *   getPolynom()      => null
  */
-function getPolynom() {
-  throw new Error('Not implemented');
+function getPolynom(...coefficients) {
+  if (coefficients.length === 0) return null;
+  return (x) => {
+    if (coefficients.length === 3) {
+      return coefficients[0] * x ** 2 + coefficients[1] * x + coefficients[2];
+    }
+    if (coefficients.length === 2) {
+      return coefficients[0] * x + coefficients[1];
+    }
+    if (coefficients.length === 1) {
+      return coefficients[0];
+    }
+    return null;
+  };
 }
 
 
@@ -81,8 +93,13 @@ function getPolynom() {
  *   ...
  *   memoizer() => the same random number  (next run, returns the previous cached result)
  */
-function memoize(/* func */) {
-  throw new Error('Not implemented');
+function memoize(func) {
+  let cache;
+  return () => {
+    if (cache) return cache;
+    cache = func();
+    return cache;
+  };
 }
 
 
@@ -101,8 +118,20 @@ function memoize(/* func */) {
  * }, 2);
  * retryer() => 2
  */
-function retry(/* func, attempts */) {
-  throw new Error('Not implemented');
+function retry(func, attempts) {
+  let attempt = 1;
+  return () => {
+    const toggle = true;
+    while (toggle) {
+      try {
+        return func();
+      } catch (e) {
+        if (attempt === attempts) break;
+        attempt += 1;
+      }
+    }
+    return attempts;
+  };
 }
 
 
@@ -138,6 +167,7 @@ function logger(/* func, logFunc */) {
  * Return the function with partial applied arguments
  *
  * @param {Function} fn
+ * @param args1
  * @return {Function}
  *
  * @example
@@ -147,8 +177,8 @@ function logger(/* func, logFunc */) {
  *   partialUsingArguments(fn, 'a','b','c')('d') => 'abcd'
  *   partialUsingArguments(fn, 'a','b','c','d')() => 'abcd'
  */
-function partialUsingArguments(/* fn, ...args1 */) {
-  throw new Error('Not implemented');
+function partialUsingArguments(fn, ...args1) {
+  return (...args2) => fn(...args1, ...args2);
 }
 
 

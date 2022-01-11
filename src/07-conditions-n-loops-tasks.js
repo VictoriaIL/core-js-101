@@ -122,10 +122,11 @@ function isTriangle(a, b, c) {
  *   { top:20, left:20, width: 20, height: 20 }    =>  false
  *
  */
-function doRectanglesOverlap(/* rect1, rect2 */) {
-  throw new Error('Not implemented');
+function doRectanglesOverlap(rect1, rect2) {
+  const width = rect1.width - rect2.left;
+  const height = rect1.height - rect2.top;
+  return width >= 0 && height >= 0;
 }
-
 
 /**
  * Returns true, if point lies inside the circle, otherwise false.
@@ -260,8 +261,18 @@ function reverseInteger(num) {
  *   5436468789016589 => false
  *   4916123456789012 => false
  */
-function isCreditCardNumber(/* ccn */) {
-  throw new Error('Not implemented');
+function isCreditCardNumber(ccn) {
+  const cnnString = ccn.toString();
+  let sum = 0;
+  for (let i = 0; i < cnnString.length; i += 1) {
+    let number = +cnnString[i];
+    if ((cnnString.length - i) % 2 === 0) {
+      number *= 2;
+      if (number > 9) number -= 9;
+    }
+    sum += number;
+  }
+  return sum % 10 === 0;
 }
 
 /**
@@ -293,7 +304,6 @@ function getDigitalRoot(num) {
  * (in that order), none of which mis-nest.
  * Brackets include [],(),{},<>
  *
- * @param {string} str
  * @return {boolean}
  *
  * @example:
@@ -307,11 +317,31 @@ function getDigitalRoot(num) {
  *   '[[][]][' => false
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
+ * @param ch
  */
-function isBracketsBalanced(/* str */) {
-  throw new Error('Not implemented');
+
+function isClosedBracket(ch) {
+  return [')', ']', '}', '>'].indexOf(ch) > -1;
 }
 
+function isBracketsBalanced(str) {
+  const brackets = {
+    ')': '(',
+    ']': '[',
+    '}': '{',
+    '>': '<',
+  };
+
+  const stack = [];
+  for (let i = 0; i < str.length; i += 1) {
+    if (isClosedBracket(str[i])) {
+      if (brackets[str[i]] !== stack.pop()) return false;
+    } else {
+      stack.push(str[i]);
+    }
+  }
+  return stack.length === 0;
+}
 
 /**
  * Returns the string with n-ary (binary, ternary, etc, where n <= 10)
